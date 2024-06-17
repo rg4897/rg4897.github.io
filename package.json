@@ -1,0 +1,25 @@
+{
+  "name": "riteshgupta",
+  "type": "module",
+  "version": "0.0.1",
+  "license": "MIT",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "4.8.6",
+    "@astrojs/mdx": "3.0.0",
+    "tippy.js": "6.3.7",
+    "mdast-util-to-string": "4.0.0",
+    "reading-time": "1.5.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "10.4.19",
+    "cssnano": "7.0.1",
+    "sass": "1.77.2"
+  }
+}
