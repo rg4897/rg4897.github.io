@@ -1,9 +1,10 @@
 /**
  * Handle AJAX submit of contact form
- * Contact me for access to the FormZen form service
+ * Contact me for access to the Google Forms API service
  */
 const submitButton = document.querySelector(".contact-form-submit-button") as HTMLButtonElement;
 const submitButtonLoadingSpinner = document.querySelector("#contact-form-submit-button-spinner") as HTMLDivElement;
+// const socialIconList = document.querySelector("social-icon-list") as HTMLDivElement;
 
 function setLoadingState(isLoading: boolean) {
   if (isLoading) {
@@ -14,6 +15,11 @@ function setLoadingState(isLoading: boolean) {
     submitButtonLoadingSpinner.style.display = "none";
   }
 }
+
+// function hideSocialIconList(){
+//  socialIconList.style.display = "block";
+// }
+// hideSocialIconList();
 
 async function submitForm(formValues: any) {
   const formData = new URLSearchParams();
