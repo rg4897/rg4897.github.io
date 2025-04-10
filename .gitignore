@@ -20,6 +20,7 @@ pnpm-debug.log*
 
 src/data/*
 /.astro
+package-lock.json
 
 # Eliminate Duplicate Files
 * - Copy.*

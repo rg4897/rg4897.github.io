@@ -31,6 +31,7 @@ const buzzwords = [
   "Tailwind CSS",
   "TypeScript",
   "WordPress",
+  "Angular"
 ];
 
 // Add tags that should be searched for buzzwords
