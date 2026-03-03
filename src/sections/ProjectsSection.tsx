@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { GlassCard, SectionTitle, Badge, Button } from '../components';
+import { GlassCard, SectionTitle, Badge } from '../components';
 import { containerVariants, fadeInUp, slideInRight } from '../utils/animations';
 import { portfolioData } from '../data/portfolio';
-import { Github, ExternalLink } from 'lucide-react';
+// import { Github, ExternalLink } from 'lucide-react';
 import { useTheme } from '../utils/theme';
 
 export const ProjectsSection: React.FC = () => {
