@@ -69,7 +69,7 @@ export const ProjectsSection: React.FC = () => {
                   </div> */}
 
                   {/* Buttons */}
-                  <div className="flex gap-3 mt-auto">
+                  {/* <div className="flex gap-3 mt-auto">
                     <Button
                       variant="secondary"
                       href={project.github}
@@ -86,7 +86,7 @@ export const ProjectsSection: React.FC = () => {
                     >
                       Demo
                     </Button>
-                  </div>
+                  </div> */}
                 </div>
               </GlassCard>
             </motion.div>
