@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { GlassCard, SectionTitle, Button } from '../components';
 import { fadeInUp, containerVariants, floatingAnimation } from '../utils/animations';
 import { portfolioData } from '../data/portfolio';
-import { Mail, Phone, MapPin, CheckCircle } from 'lucide-react';
+import { Mail, Phone, CheckCircle } from 'lucide-react';
 import { useTheme } from '../utils/theme';
 
 interface FormData {
