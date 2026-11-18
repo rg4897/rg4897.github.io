@@ -7,27 +7,28 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="msapplication-navbutton-color" content="#3A0B12">
-<title>शुभ विवाह</title>
-<meta name="description" content="रितेश ❤️ सुनैना — शुभ विवाह | 11 दिसंबर 2026, आपको सादर आमंत्रित करते हैं।"> 
+<title>शुभ विवाह | रितेश संग सुनैना</title>
+<meta name="description" content="रितेश संग सुनैना के शुभ विवाह में आपका हार्दिक स्वागत है। 11 दिसंबर 2026, नेरुल, नवी मुंबई।">
+<link rel="canonical" href="https://rg4897.github.io/invitation.html">
 
 <!-- Link preview tags: crawlers don't run JavaScript, so keep these static. -->
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Ritesh weds Sunaina">
-<meta property="og:title" content="शुभ विवाह | रितेश ❤️ सुनैना">
-<meta property="og:description" content="11 दिसंबर 2026 • नई दिल्ली — आपको सादर आमंत्रित करते हैं। आपका शुभ आगमन ही हमारा आशीर्वाद है।">
-<meta property="og:url" content="https://thesurajdev.github.io/wedding-invite/">
-<meta property="og:image" content="og-image.jpg">
-<meta property="og:image:secure_url" content="og-image.jpg">
-<meta property="og:image:type" content="image/jpeg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="रितेश और सुनैना का शुभ विवाह निमंत्रण">
 <meta property="og:locale" content="hi_IN">
+<meta property="og:site_name" content="रितेश संग सुनैना का शुभ विवाह">
+<meta property="og:title" content="शुभ विवाह | रितेश संग सुनैना">
+<meta property="og:description" content="11 दिसंबर 2026 • नेरुल, नवी मुंबई • आपको सादर आमंत्रित करते हैं।">
+<meta property="og:url" content="https://rg4897.github.io/invitation.html">
+<meta property="og:image" content="https://rg4897.github.io/og-image.jpg">
+<meta property="og:image:secure_url" content="https://rg4897.github.io/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1731">
+<meta property="og:image:height" content="909">
+<meta property="og:image:alt" content="रितेश संग सुनैना का शुभ विवाह निमंत्रण">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="शुभ विवाह | रितेश ❤️ सुनैना">
-<meta name="twitter:description" content="11 दिसंबर 2026 • नई दिल्ली — आपको सादर आमंत्रित करते हैं।">
-<meta name="twitter:image" content="og-image.jpg">
+<meta name="twitter:title" content="शुभ विवाह | रितेश संग सुनैना">
+<meta name="twitter:description" content="11 दिसंबर 2026 • नेरुल, नवी मुंबई • आपको सादर आमंत्रित करते हैं।">
+<meta name="twitter:image" content="https://rg4897.github.io/og-image.jpg">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Yatra+One&family=Mukta:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&display=swap" rel="stylesheet">
@@ -307,7 +308,7 @@
     pointer-events:none;
   }
   .hero-shloka{
-    position:relative;
+    position:absolute;
     z-index:2;
     max-width:none;
     width:max-content;
@@ -436,7 +437,7 @@
 const WEDDING = {
   groomName: "रितेश",
   brideName: "सुनैना",
-  coupleShort: "Ritesh & Sunaina",
+  coupleShort: "रितेश संग सुनैना",
   blessingsLine: "माता-पिता एवं समस्त परिवारजनों के आशीर्वाद से",
   invitationNote: "सादर आमंत्रित",
   haldiDate: "10 दिसंबर 2026",
@@ -557,7 +558,7 @@ const WEDDING_CONFIG = {
       <span class="om-dot"></span>
     </div>
 
-    <div class="hero-shloka shloka-panel absolute z-[2] left-1/2 -translate-x-1/2 bottom-40 md:bottom-32 text-center max-w-[92vw] px-4 sm:px-7">
+    <div class="hero-shloka shloka-panel absolute z-[2] left-1/2 -translate-x-1/2 bottom-48 md:bottom-64 text-center max-w-[92vw] px-4 sm:px-7">
       <p class="hindi-text leading-relaxed">वक्रतुण्ड महाकाय सूर्यकोटि समप्रभ।</p>
       <p class="hindi-text leading-relaxed mt-1">निर्विघ्नं कुरु मे देव सर्वकार्येषु सर्वदा॥</p>
     </div>
@@ -928,7 +929,7 @@ const WEDDING_CONFIG = {
   // ---------------------------------------------------------------------
   // 2. RENDER
   // ---------------------------------------------------------------------
-  document.title = CONFIG.event.titleHindi + ' | ' + CONFIG.couple.brideName + ' & ' + CONFIG.couple.groomName;
+  document.title = CONFIG.event.titleHindi + ' | ' + CONFIG.couple.groomName + ' संग ' + CONFIG.couple.brideName;
 
   setText('preloaderTitle', CONFIG.event.titleHindi);
   setText('inviteCardTitle', CONFIG.event.titleHindi);
@@ -1271,7 +1272,7 @@ const WEDDING_CONFIG = {
       if (pct) pct.textContent = 'Loading 100%';
       setTimeout(function () {
         if (bgAudioEl && BG_MUSIC_SRC) {
-          bgAudioEl.playbackRate = 2.6;
+          bgAudioEl.playbackRate = 1.25;
           var p = bgAudioEl.play();
           if (p && typeof p.catch === 'function') p.catch(function () {});
           bgAudioEl.addEventListener('ended', startInvitationFlow, { once: true });
@@ -1309,7 +1310,7 @@ const WEDDING_CONFIG = {
     bgAudioEl.src = BG_MUSIC_SRC;
     bgAudioEl.volume = TARGET_VOLUME;
     bgAudioEl.preload = 'auto';
-    bgAudioEl.playbackRate = 2.6;
+    bgAudioEl.playbackRate = 1.25;
     bgAudioEl.load();
   }
   var bgAudioSecondaryEl = document.getElementById('bgMusicSecondary');
@@ -1350,7 +1351,7 @@ const WEDDING_CONFIG = {
   function playBackgroundMusic() {
     if (!BG_MUSIC_SRC || !bgAudioEl) return;
     bgAudioEl.volume = TARGET_VOLUME;
-    bgAudioEl.playbackRate = 2.6;
+    bgAudioEl.playbackRate = 1.25;
     var p = bgAudioEl.play();
     if (p && typeof p.catch === 'function') p.catch(function () {});
   }
