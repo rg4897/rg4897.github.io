@@ -344,7 +344,7 @@
     flex:none;
   }
   .shloka-panel{
-    position:relative;
+    margin-top:12.5rem;
     padding:18px 28px;
     border-radius:16px;
     background:linear-gradient(180deg, rgba(122,30,43,0.5) 0%, rgba(30,8,10,0.6) 100%);
@@ -457,7 +457,7 @@ const WEDDING = {
     introImage: "image1.jpg",
     heroVideoDesktop: "desktop_arti.webm",
     heroVideoMobile: "mobile_arti.webm",
-    bgMusicPrimary: "ganesh_mantra.mp3",
+    bgMusicPrimary: "ganesh-mantra.mp3",
     bgMusicSecondary: "wedding_song.mp3"
   }
 };
@@ -475,7 +475,7 @@ const WEDDING_CONFIG = {
   event: {
     titleHindi: "शुभ विवाह",
     dateDisplay: WEDDING.weddingDate,
-    cityLine: "नवी मुंबई"
+    cityLine: "नेरुल, नवी मुंबई"
   },
   venue: {
     name: WEDDING.venueName,
@@ -830,8 +830,8 @@ const WEDDING_CONFIG = {
 </div>
 
 <!-- ================= BACKGROUND MUSIC ================= -->
-<audio id="bgMusic" loop preload="auto" playsinline></audio>
-<audio id="bgMusicSecondary" loop preload="auto" playsinline></audio>
+<audio id="bgMusicPrimary" preload="auto" playsinline></audio>
+<audio id="bgMusicSecondary" preload="auto" playsinline></audio>
 
 <!-- ================= DOOR SCENE ================= -->
 <div id="door-scene" class="fixed inset-0 z-[900]">
@@ -936,7 +936,7 @@ const WEDDING_CONFIG = {
   setText('inviteCardNames', CONFIG.couple.groomName + ' ❤️ ' + CONFIG.couple.brideName);
   setText('inviteSealLetter', (CONFIG.couple.groomName || '').charAt(0));
   setText('blessingsLine', CONFIG.hosts.blessingsLine);
-  setText('invitationNote', CONFIG.hosts.invitationNote);
+  // setText('invitationNote', CONFIG.hosts.invitationNote);
 
   var introTitle = document.getElementById('introTitle');
   if (introTitle) introTitle.innerHTML = 'शुभ <span class="text-marigold-light">विवाह</span>';
@@ -1257,10 +1257,6 @@ const WEDDING_CONFIG = {
       inviteCardBtn.style.opacity = '1';
       inviteCardBtn.style.pointerEvents = 'auto';
     }
-
-    setTimeout(function () {
-      openDoor();
-    }, 250);
   }
 
   var loadInterval = setInterval(function () {
@@ -1271,13 +1267,8 @@ const WEDDING_CONFIG = {
       if (fill) fill.style.width = '100%';
       if (pct) pct.textContent = 'Loading 100%';
       setTimeout(function () {
-        if (bgAudioEl && BG_MUSIC_SRC) {
-          bgAudioEl.playbackRate = 1.25;
-          var p = bgAudioEl.play();
-          if (p && typeof p.catch === 'function') p.catch(function () {});
-          bgAudioEl.addEventListener('ended', startInvitationFlow, { once: true });
-          setTimeout(startInvitationFlow, 14000);
-        } else {
+        if (bgAudioEl && BG_MUSIC_SRC) {          
+          playBackgroundMusic();
           startInvitationFlow();
         }
       }, 350);
@@ -1305,12 +1296,13 @@ const WEDDING_CONFIG = {
   var activeTrack = 'hero';
   var fadeTimer = null;
 
-  var bgAudioEl = document.getElementById('bgMusic');
+  var bgAudioEl = document.getElementById('bgMusicPrimary');
   if (bgAudioEl && BG_MUSIC_SRC) {
     bgAudioEl.src = BG_MUSIC_SRC;
     bgAudioEl.volume = TARGET_VOLUME;
     bgAudioEl.preload = 'auto';
     bgAudioEl.playbackRate = 1.25;
+    bgAudioEl.addEventListener('ended', autoOpenInvitation, { once: true });
     bgAudioEl.load();
   }
   var bgAudioSecondaryEl = document.getElementById('bgMusicSecondary');
@@ -1348,12 +1340,29 @@ const WEDDING_CONFIG = {
     }, CROSSFADE_MS / steps);
   }
 
+  var audioResumePending = false;
   function playBackgroundMusic() {
     if (!BG_MUSIC_SRC || !bgAudioEl) return;
     bgAudioEl.volume = TARGET_VOLUME;
     bgAudioEl.playbackRate = 1.25;
     var p = bgAudioEl.play();
-    if (p && typeof p.catch === 'function') p.catch(function () {});
+    if (!p || typeof p.catch !== 'function') return;
+    p.catch(function (error) {
+      if (error.name === 'NotAllowedError') {
+        if (audioResumePending) return;
+        audioResumePending = true;
+        var resume = function () {
+          audioResumePending = false;
+          document.removeEventListener('pointerdown', resume);
+          document.removeEventListener('keydown', resume);
+          playBackgroundMusic();
+        };
+        document.addEventListener('pointerdown', resume, { once: true });
+        document.addEventListener('keydown', resume, { once: true });
+      } else {
+        console.error('Unable to play the primary background audio.', error);
+      }
+    });
   }
 
   function openDoor() {
@@ -1527,6 +1536,7 @@ const WEDDING_CONFIG = {
   var letterBottom = document.getElementById('letterBottom');
   var inviteState = 'closed'; // closed | opening | open | closing
   var heroVisible = true;
+  var invitationAutoOpened = false;
 
   setText('letterTitle', CONFIG.event.titleHindi);
   setText('letterNames', (CONFIG.couple.groomName || '') + ' ❤️ ' + (CONFIG.couple.brideName || ''));
@@ -1553,7 +1563,86 @@ const WEDDING_CONFIG = {
   }
   function later(fn, ms) { setTimeout(fn, ms); }
 
+  var introNudgeTimer = null;
+  var stopIntroNudge = null;
+  function nudgeIntroForScroll() {
+    if (!introEl || introNudgeTimer !== null || stopIntroNudge ||
+        (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+
+    var root = document.documentElement;
+    var originalSnap = root.style.scrollSnapType;
+    var canceled = false;
+    var returnTimer = null;
+    var restoreTimer = null;
+    var nextNudgeAt = Date.now() + 2000;
+
+    function removeListeners() {
+      document.removeEventListener('pointerdown', stop);
+      document.removeEventListener('wheel', stop);
+      document.removeEventListener('touchstart', stop);
+      document.removeEventListener('keydown', stop);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+    }
+
+    function stop() {
+      if (canceled) return;
+      canceled = true;
+      clearTimeout(introNudgeTimer);
+      clearTimeout(returnTimer);
+      clearTimeout(restoreTimer);
+      introNudgeTimer = null;
+      root.style.scrollSnapType = originalSnap;
+      removeListeners();
+      stopIntroNudge = null;
+    }
+
+    function onVisibilityChange() {
+      if (document.hidden) stop();
+    }
+
+    function nudge() {
+      if (canceled) return;
+      var rect = introEl.getBoundingClientRect();
+      if (inviteState !== 'open' || scrollLocked || rect.bottom <= 0 || rect.top >= window.innerHeight) {
+        stop();
+        return;
+      }
+
+      var startY = window.scrollY;
+      root.style.scrollSnapType = 'none';
+      window.scrollTo({ top: startY + 56, behavior: 'smooth' });
+      returnTimer = later(function () {
+        if (canceled) return;
+        window.scrollTo({ top: startY, behavior: 'smooth' });
+        restoreTimer = later(function () {
+          if (canceled) return;
+          root.style.scrollSnapType = originalSnap;
+          nextNudgeAt += 2000;
+          introNudgeTimer = later(nudge, Math.max(0, nextNudgeAt - Date.now()));
+        }, 600);
+      }, 500);
+    }
+
+    stopIntroNudge = stop;
+    document.addEventListener('pointerdown', stop, { once: true });
+    document.addEventListener('wheel', stop, { once: true, passive: true });
+    document.addEventListener('touchstart', stop, { once: true, passive: true });
+    document.addEventListener('keydown', stop, { once: true });
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    introNudgeTimer = later(nudge, 2000);
+  }
+
+  function autoOpenInvitation() {
+    if (invitationAutoOpened) return;
+    invitationAutoOpened = true;
+    startInvitationFlow();
+    later(function () {
+      if (inviteState === 'closed') openEnvelope();
+    }, 0);
+  }
+
   function openEnvelope() {
+    if (inviteState !== 'closed') return;
     inviteState = 'opening';
     inviteCardBtn.style.pointerEvents = 'none';
     if (inviteLabel) inviteLabel.style.opacity = '0';
@@ -1599,12 +1688,14 @@ const WEDDING_CONFIG = {
           if (introEl) introEl.classList.remove('intro-hold'); // text + petals now rise in
           inviteState = 'open';
           hintState.update();
+          nudgeIntroForScroll();
         }, 850);
       }, 1000);
     }, 1250);
   }
 
   function closeEnvelope() {
+    if (stopIntroNudge) stopIntroNudge();
     inviteState = 'closing';
     hintState.update();
     lockScroll(true);
